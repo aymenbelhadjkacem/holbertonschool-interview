@@ -1,32 +1,30 @@
 #!/usr/bin/python3
-"""
-A script that reads stdin line by line and computes metrics
-"""
+""" Parses Logs """
 import sys
-STATUS = {'200': 0, '301': 0,
-          '400': 0, '401': 0,
-          '403': 0, '404': 0,
-          '405': 0, '500': 0}
-size = 0
-lines = 0
+
+
+i = 0
+FileSize = 0
+status = {'200': 0, '301': 0, '400': 0, '401': 0,
+          '403': 0, '404': 0, '405': 0, '500': 0}
+codes = ['200', '301', '400', '401', '403', '404', '405', '500']
 try:
-    for argument in sys.stdin:
-        argumentList = argument.split(" ")
-        if len(argumentList) > 2:
-            status = argumentList[-2]
-            fileSize = int(argumentList[-1])
-            if status in STATUS:
-                STATUS[status] += 1
-            size += fileSize
-            lines += 1
-            if lines == 10:
-                print("File size: {:d}".format(size))
-                for key, value in sorted(STATUS.items()):
-                    if value != 0:
-                        print("{}: {:d}".format(key, value))
-                lines = 0
+    for line in sys.stdin:
+        i += 1
+        sp = line.split(' ')
+        if len(sp) > 2:
+            FileSize += int(sp[-1])
+            if sp[-2] in status:
+                status[sp[-2]] += 1
+        if i % 10 == 0:
+            print("File size: {}".format(FileSize))
+            for code in codes:
+                if status[code]:
+                    print("{}: {}".format(code, status[code]))
+except KeyboardInterrupt:
+    pass
 finally:
-    print("File size: {:d}".format(size))
-    for key, value in sorted(STATUS.items()):
-        if value != 0:
-            print("{}: {:d}".format(key, value))
+    print("File size: {}".format(FileSize))
+    for code in codes:
+        if status[code]:
+            print("{}: {}".format(code, status[code]))
