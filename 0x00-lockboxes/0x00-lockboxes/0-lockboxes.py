@@ -3,13 +3,27 @@
 
 
 def canUnlockAll(boxes):
-   
-    keysList = [0]
-    for key in keysList:
-        for k in boxes[key]:
-            if k not in keysList and k < len(boxes):
-                keysList.append(k)
-    for i in range(len(boxes)):
-        if i not in keysList:
+    newlist = []
+    index = 0
+    emptiness = 0
+    for i in boxes:
+        if (i == []):
+            emptiness += 1
+        if emptiness > 1:
             return False
-    return True
+    if emptiness == 1:
+        index += 1
+        newlist.append([])
+    for j in boxes:
+        for i in boxes:
+            if (index in i):
+                if (i in newlist):
+                    continue
+                else:
+                    newlist.append(i)
+                    index += 1
+                    break
+    if (len(newlist) == len(boxes)):
+        return (True)
+    else:
+        return(False)
