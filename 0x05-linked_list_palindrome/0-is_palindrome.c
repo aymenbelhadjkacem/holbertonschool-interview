@@ -1,39 +1,37 @@
 #include "lists.h"
-#include <stdio.h>
 #include <stdlib.h>
-#include <stddef.h>
 /**
-* is_palindrome - checks if a singly list is palindrome
-* @head: double pointer to the head
-* Return: 1 if palindrome, 0 otherwise
-*/
+ * is_palindrome - checks if a singly linked list is a palindrome.
+ * @head: pointer to head of list
+ * Return: 0 if it is not a palindrome, 1 if it is a palindrome.
+ *
+ * Description: checks if a singly linked list is a palindrome.
+ */
 int is_palindrome(listint_t **head)
 {
-int j = 0, i = 0, s;
-listint_t *beg, *end;
-{
-int j = 0, i = 0, s;
-listint_t *beg, *end;
-if (!head)
-return (0);
-if (!(*head))
-return (1);
-end = *head;
-beg = *head;
-j += 1;
-while (end->next)
-{
-end = end->next;
-j++;
-}
-s = j / 2;
-while (i <= s)
-{
-if (beg->n != end->n)
-return (0);
-beg += 2;
-end -= 2;
-i++;
-}
-return (1);
+  listint_t *iterate;
+  int i, j, len;
+  int nums[100000];
+
+  if (head == NULL)
+    return (0);
+
+  if (*head == NULL)
+    return (1);
+
+  i = 0;
+  for (iterate = *head; iterate != NULL; iterate = (*iterate).next)
+    {
+      nums[i] = (*iterate).n;
+      i++;
+    }
+
+  len = i;
+  i--;
+  for (j = 0; j < len; j++, i--)
+    {
+      if (nums[j] != nums[i])
+	return (0);
+    }
+  return (1);
 }
