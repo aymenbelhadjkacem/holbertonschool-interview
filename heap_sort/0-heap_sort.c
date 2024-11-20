@@ -1,56 +1,63 @@
 #include "sort.h"
 
 /**
- * heap - Finds the biggest element
- * @array: Pointer to array
- * @n: size of array
- * @i: index
- * @size: size
+ * heap_sort - Sorts An Array Fllowing The Heap Sort Algorithm.
+ *
+ * @array: Array Of Integers Sort In Ascending Order.
+ * @size: Size Of The Array To Sort.
+ *
+ * Return: Print The Array After Each Time You Swap Two Elements.
  */
-void heap(int *array, size_t n, int i, size_t size)
+void heap_sort(int *array, size_t size)
 {
-	int bgr = i;
-	int l = 2 * i + 1;
-	int r = 2 * i + 2;
+	int i;
 	int tmp;
 
-	if (l < (int) n && array[l] > array[bgr])
-		bgr = l;
+	if (size < 2)
+		return;
 
-	if (r < (int) n && array[r] > array[bgr])
-		bgr = r;
+	for (i = size / 2 - 1; i >= 0; i--)
+		heapify(array, size, (size_t)i, size);
 
-	if (bgr != i)
+	for (i = size - 1; i >= 0; i--)
 	{
 		tmp = array[i];
-
-		array[i] = array[bgr];
-		array[bgr] = tmp;
-		print_array(array, size);
-		heap(array, n, bgr, size);
+		array[i] = array[0];
+		array[0] = tmp;
+		if (i != 0)
+			print_array(array, size);
+		heapify(array, (size_t)i, 0, size);
 	}
 }
 
 /**
- * heap_sort - Heap sort algorithm
- * @array: Pointer to array
- * @size: size of array
+ * heapify - Turns An Array In A Heap Tree
+ * @array: Array To Turn Into Heap
+ * @s: Size Of The Subtree
+ * @root: Index Of The Subtree In The Heap
+ * @size: Size Of The Whole Array
  */
-void heap_sort(int *array, size_t size)
+void heapify(int *array, size_t s, size_t root, size_t size)
 {
-	int i, tmp;
+	size_t max, left, right;
+	int tmp;
 
-	if (size == 0)
-		return;
-	for (i = size / 2 - 1; i >= 0; i--)
-		heap(array, size, i, size);
+	max = root;
+	left = (root * 2) + 1;
+	right = (root * 2) + 2;
 
-	for (i = size - 1; i > 0; i--)
+	if (left < s && array[left] > array[max])
+		max = left;
+
+	if (right < s && array[right] > array[max])
+		max = right;
+
+	if (max != root)
 	{
-		tmp = array[0];
-		array[0] = array[i];
-		array[i] = tmp;
+		tmp = array[root];
+		array[root] = array[max];
+		array[max] = tmp;
 		print_array(array, size);
-		heap(array, i, 0, size);
+		heapify(array, s, max, size);
 	}
 }
